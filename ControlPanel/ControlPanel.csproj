@@ -54,6 +54,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BulletScreen.xaml.cs">
+      <DependentUpon>BulletScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Style\BulletCheckBox.cs" />
+    <Page Include="BulletScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -5,8 +5,145 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ControlPanel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="120" Width="340"
+        WindowStyle="None"
+        Background="{x:Null}"
+        AllowsTransparency="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        >
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <!--设置样式 -->
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="Rectangle" Stroke="#FFFFFFFF" StrokeMiterLimit="1.000000" StrokeThickness="0.500000" RadiusX="10" RadiusY="10" Fill="#FF777777"></Rectangle>
+                            <ContentPresenter x:Name="ContentPresenter" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True"/>
+                        </Grid>
+                        <!-- 设置鼠标移到关闭按钮上的效果 -->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Fill" TargetName="Rectangle">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="White"></SolidColorBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="Black"></Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type local:BulletCheckBox}">
+            <Setter Property="Background" Value="#FF5B9BD5"></Setter>
+            <Setter Property="Foreground" Value="#DDE8E1"></Setter>
+            <Setter Property="CheckedForeground" Value="White"></Setter>
+            <Setter Property="CheckedBackground" Value="#FF5B9BD5"></Setter>
+            <Setter Property="FontSize" Value="13"></Setter>
+            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Width" Value="58"></Setter>
+            <Setter Property="Height" Value="28"></Setter>
+            <Setter Property="Margin" Value="1"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <!--控件模板-->
+                    <ControlTemplate TargetType="{x:Type local:BulletCheckBox}">
+                        <Viewbox Stretch="Uniform"  VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <Border x:Name="border" Width="58" Height="28" SnapsToDevicePixels="True"
+                                Margin="{TemplateBinding Margin}" CornerRadius="14" Background="{TemplateBinding Background}">
+                                <StackPanel Orientation="Horizontal">
+                                    <!--状态球-->
+                                    <Border x:Name="state" Width="24" Height="24" Margin="3,0,1,0" CornerRadius="12" SnapsToDevicePixels="True"
+                                    Background="{TemplateBinding Foreground}">
+                                        <Border.RenderTransform>
+                                            <TranslateTransform x:Name="transState" X="0"></TranslateTransform>
+                                        </Border.RenderTransform>
+                                    </Border>
+                                    <!--文本框-->
+                                    <TextBlock Width="24" Foreground="{TemplateBinding Foreground}" x:Name="txt" Text="{TemplateBinding Text}" VerticalAlignment="Center" TextAlignment="Center">
+                                        <TextBlock.RenderTransform>
+                                            <TranslateTransform x:Name="transTxt" X="0"></TranslateTransform>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </Viewbox>
+
+                        <!--触发器：设置选中状态符号-->
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CheckedText}" TargetName="txt"/>
+                                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CheckedForeground}" TargetName="state"/>
+                                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CheckedForeground}" TargetName="txt"/>
+                                <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=CheckedBackground}" TargetName="border"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="transState" Storyboard.TargetProperty="X" To="27" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetName="transTxt" Storyboard.TargetProperty="X" To="-24" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="transState" Storyboard.TargetProperty="X" To="0" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetName="transTxt" Storyboard.TargetProperty="X" To="0" Duration="0:0:0.2" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" Value="{StaticResource DisableOpacity}" TargetName="border"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- 窗体中的内容 -->
     <Grid>
         
+        
+        
+        <!-- 窗体的边框，底色设置，注意将CornerRadius与左上角“X”叉形按钮的设置保持一致或约大于叉形按钮的RadiusX/Y设置 -->
+        <Border CornerRadius="10,10,10,10"  Height="Auto" BorderBrush="Teal" BorderThickness="0">
+            <Border.Background>
+                <SolidColorBrush Color="#FFBDD7EE" Opacity="0.95"/>
+            </Border.Background>
+        </Border>
+        <!--左上角的“X”叉形按钮-->
+        <Button Name="Btn_Close" Style="{StaticResource ButtonStyle}" Click="Btn_Close_Click"  Width="15" Height="15" Content="X" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="3,3,3,3"></Button>
+        <!-- 两行四列 左侧说明，右侧内容 -->
+        <Grid Margin="10,10,10,10" VerticalAlignment="Center" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" FontSize="18" Foreground="#FF1E4E79">观众数：</Label>
+            <TextBlock Grid.Column="1" Grid.Row="0" Name="Txt_ViewerCount" FontSize="18" Foreground="#FF1E4E79" Text="0" VerticalAlignment="Center"/>
+            <Label Grid.Column="2" Grid.Row="0" FontSize="18" Foreground="#FF1E4E79">关注度：</Label>
+            <TextBlock Grid.Column="3" Grid.Row="0" Name="Txt_Attraction" FontSize="18" Foreground="#FF1E4E79" Text="0" VerticalAlignment="Center"/>
+            <Label Grid.Column="0" Grid.Row="1" FontSize="18" Foreground="#FF1E4E79">弹幕：</Label>
+            <local:BulletCheckBox Grid.Column="1" Grid.Row="1" x:Name="Check_TxtPop" IsChecked="True" CheckedText="ON" Text="OFF" Height="22" 
+                                  Checked="Check_TxtPop_Checked" Unchecked="Check_TxtPop_Unchecked"/>
+            <Label Grid.Column="2" Grid.Row="1" FontSize="18" Foreground="#FF1E4E79">切换场景：</Label>
+            <local:BulletCheckBox Grid.Column="3" Grid.Row="1" x:Name="Check_Switchsence" IsChecked="True" CheckedText="PPT" Text="PEN" Height="22"
+                                  Checked="Check_Switchsence_Checked" Unchecked="Check_Switchsence_Unchecked"/>
+        </Grid>
     </Grid>
 </Window>
