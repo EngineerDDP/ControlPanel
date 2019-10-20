@@ -9,14 +9,14 @@
         WindowStyle="None"
         Background="{x:Null}"
         AllowsTransparency="True"
-        ShowInTaskbar="False"
+        ShowInTaskbar="False" Closing="Window_Closing"
         >
     <Grid>
         <Grid.Background>
             <SolidColorBrush Color="#FFE2E2E2" Opacity="0.5"/>
         </Grid.Background>
-        <ListView Background="{x:Null}" BorderThickness="0">
-            <ListViewItem>
+        <ListView Background="{x:Null}" BorderThickness="0" Name="List_Message">
+            <!--<ListViewItem>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -25,7 +25,7 @@
                     <TextBlock Grid.Row="0" Foreground="Green" Text="胡俊  18:56:33" FontSize="15" ></TextBlock>
                     <TextBlock Grid.Row="1" Foreground="Black" Text="知道了" FontSize="22"/>
                 </Grid>
-            </ListViewItem>
+            </ListViewItem>-->
         </ListView>
     </Grid>
 </Window>

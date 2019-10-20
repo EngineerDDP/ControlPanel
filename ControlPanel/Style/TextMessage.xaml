@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="ControlPanel.Style.TextMessage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ControlPanel.Style"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Name="Txt_Tag" Grid.Row="0" Foreground="Green" Text="胡俊  18:56:33" FontSize="15" ></TextBlock>
+        <TextBlock Name="Txt_Content" Grid.Row="1" Foreground="Black" Text="知道了" FontSize="22"/>
+    </Grid>
+</UserControl>
